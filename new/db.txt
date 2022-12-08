@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+   <EditText
+       android:id="@+id/e1"
+       android:layout_width="179dp"
+       android:layout_height="46dp"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.788"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.351" />
+
+   <EditText
+       android:id="@+id/e2"
+       android:layout_width="166dp"
+       android:layout_height="52dp"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.746"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.441" />
+
+   <EditText
+       android:id="@+id/e3"
+       android:layout_width="142dp"
+       android:layout_height="44dp"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.701"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.536" />
+
+   <TextView
+       android:id="@+id/roll"
+       android:layout_width="110dp"
+       android:layout_height="48dp"
+       android:text="Rollno:"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.192"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.445" />
+
+   <TextView
+       android:id="@+id/dept"
+       android:layout_width="110dp"
+       android:layout_height="48dp"
+       android:text="dept"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.192"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.534" />
+
+   <TextView
+       android:layout_width="252dp"
+       android:layout_height="48dp"
+       android:text="DATAbase"
+       android:gravity="center"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.425"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.227" />
+
+   <TextView
+       android:id="@+id/name"
+       android:layout_width="110dp"
+       android:layout_height="48dp"
+       android:text="name"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.192"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.353" />
+
+   <Button
+       android:id="@+id/insert"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="insert"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.264"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.66" />
+
+   <Button
+       android:id="@+id/viewall"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="viewall"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.637"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.761" />
+
+   <Button
+       android:id="@+id/update"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="update"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.264"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.761" />
+
+   <Button
+       android:id="@+id/delete"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="delete"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.637"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="0.66" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+package com.example.gps;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+
+public class MainActivity extends AppCompatActivity {
+
+    EditText e1,e2,e3;
+    Button b1,b2,b3,b4;
+    SQLiteDatabase db;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        e1 = findViewById(R.id.e1);
+        e2 = findViewById(R.id.e2);
+        e3 = findViewById(R.id.e3);
+
+        b1 = findViewById(R.id.insert);
+        b2 = findViewById(R.id.delete);
+        b3 = findViewById(R.id.update);
+        b4 = findViewById(R.id.viewall);
+
+        db = openOrCreateDatabase("Studentdb", Context.MODE_PRIVATE,null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS student(name varchar,rollno varchar,dept varchar)");
+
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.execSQL("Insert into student values ('"+e1.getText()+"','"+e2.getText()+"','"+e3.getText()+"')");
+                showMessage("SUCCESS","DATA inserted successfully!!!");
+                cleartext();
+            }
+        });
+
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.execSQL("delete from student where rollno= '"+e2.getText()+"' ");
+                showMessage("SUCCESS","DATA deleted successfully!!!");
+                cleartext();
+            }
+        });
+
+
+        b3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Cursor c = db.rawQuery("Select * from student where rollno ='"+e1.getText()+"'",null);
+                if(c.moveToFirst())
+                {
+                    db.execSQL("update student set name = '"+e1.getText()+"',dept = '"+e3.getText()+"' where rollno = '"+e2.getText()+"'");
+                    showMessage("SUCCESS","Record updated!!");
+                }
+
+                cleartext();
+            }
+        });
+
+        b4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Cursor c=db.rawQuery("SELECT * FROM student", null);
+                StringBuffer buffer=new StringBuffer();
+
+                while(c.moveToNext())
+                {
+                    buffer.append("Rollno: "+c.getString(0)+"\n");
+                    buffer.append("Name: "+c.getString(1)+"\n");
+                    buffer.append("Marks: "+c.getString(2)+"\n\n");
+                }
+                showMessage("Student Details", buffer.toString());
+            }
+        });
+    }
+
+    public void showMessage(String title,String message)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.show();
+    }
+
+    public void cleartext()
+    {
+        e1.setText("");
+        e2.setText("");
+        e3.setText("");
+        e1.requestFocus();
+    }
+
+}

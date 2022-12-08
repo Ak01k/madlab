@@ -1,0 +1,99 @@
+// paste images in app->res->drawable
+
+activity xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="20dp"
+    android:layout_gravity="center">
+
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center"
+        android:id="@+id/imageview"
+        android:layout_weight="1"
+        android:layout_margin="10dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/bt1"
+        android:layout_weight="1"
+        android:text="load image 1"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/bt2"
+        android:layout_weight="1"
+        android:text="load image 1"
+        />
+
+</LinearLayout>
+
+activity java
+
+
+package com.example.prac2;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+
+public class MainActivity extends AppCompatActivity {
+    ImageView img;
+    Button bt1,bt2;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        img = (ImageView) findViewById(R.id.imageview);
+        bt1 = (Button) findViewById(R.id.bt1);
+        bt2 = (Button) findViewById(R.id.bt2);
+
+        bt1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        img.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                img.setImageResource(R.drawable.india1);
+                            }
+                        });
+                    }
+                }).start();
+            }
+        });
+
+        bt2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        img.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                img.setImageResource(R.drawable.india2);
+                            }
+                        });
+                    }
+                }).start();
+            }
+        });
+    }
+}

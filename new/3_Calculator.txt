@@ -1,0 +1,108 @@
+calculator
+
+<?xml version="1.0" encoding="utf-8" ?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="-4dp"
+        android:layout_marginBottom="648dp"
+        android:id="@+id/num1"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="-2dp"
+        android:id="@+id/num2"
+        android:layout_marginBottom="589dp" />
+
+    <Button
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="161dp"
+        android:layout_marginBottom="346dp"
+        android:text="add" />
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="165dp"
+        android:layout_marginBottom="447dp"
+        android:text="Result"
+
+        android:textSize="30dp" />
+
+</RelativeLayout>
+
+
+MainActivity.java
+package com.example.t1;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+public class MainActivity extends AppCompatActivity {
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        TextView Res = (TextView) findViewById(R.id.result);
+        EditText Num1 = (EditText) findViewById(R.id.num1);
+        EditText Num2 = (EditText) findViewById(R.id.num2);
+        Button b1 = (Button) findViewById(R.id.add);
+
+
+
+
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                float temp1=0;
+                float temp2=0;
+                float temp3=0;
+
+
+                temp1=Float.parseFloat(Num1.getText().toString());
+                temp2=Float.parseFloat(Num2.getText().toString());
+
+                temp3=temp1+temp2;
+
+
+                Res.setText(temp3+"");
+            }
+        });
+
+
+
+    }
+
+
+}
