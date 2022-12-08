@@ -1,0 +1,153 @@
+activity_main.xml
+<?xml version="1.0" encoding="utf-8" ?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    >
+
+
+
+   <EditText
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+      android:id="@+id/t1"/>
+
+   <Spinner
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+      android:id="@+id/s1"/>
+
+   <Button
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+         android:id="@+id/b1"
+/>
+
+</LinearLayout>
+
+activity_second.xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SecondActivity"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/t1"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/t2"/>
+
+</LinearLayout>
+
+Mainactivity.java
+
+package com.example.gps;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
+
+
+public class MainActivity extends AppCompatActivity {
+   EditText e1;
+   Spinner ss1;
+   Button b1;
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        String[] dept = {"IT","CSE"};
+
+        e1 = (EditText) findViewById(R.id.t1);
+        ss1 = (Spinner) findViewById(R.id.s1);
+        b1 = (Button ) findViewById(R.id.b1);
+
+        ArrayAdapter adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_spinner_item,dept);
+        ss1.setAdapter(adapter);
+
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, SecondActivity.class);
+                String name = e1.getText().toString();
+                String dep=ss1.getSelectedItem().toString();
+
+                i.putExtra("name",name);
+                i.putExtra("dept",dep);
+
+                startActivity(i);
+            }
+        });
+
+
+
+
+
+    }
+}
+
+SecondActivity.java
+
+package com.example.gps;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.TextView;
+
+public class SecondActivity extends AppCompatActivity {
+    TextView tt1, tt2;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_second);
+        tt1 = (TextView) findViewById(R.id.t1);
+        tt2 = (TextView) findViewById(R.id.t2);
+
+        Intent i = getIntent();
+
+        String name,dep;
+        name = i.getStringExtra("name");
+        dep = i.getStringExtra("dept");
+
+        tt1.setText(name);
+        tt2.setText(dep);
+
+
+
+
+    }
+}
