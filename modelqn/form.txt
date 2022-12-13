@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   android:orientation="vertical"
+    android:id="@+id/linear1"
+    android:layout_gravity="center"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Form"
+        android:layout_margin="20dp"
+        android:id="@+id/form"
+        android:layout_gravity="center"
+        android:textSize="30dp"
+        android:textColor="@color/black"
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Light"
+            android:id="@+id/white"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dark"
+            android:id="@+id/dark"/>
+
+
+
+    </LinearLayout>
+
+    <EditText
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:hint="Username"
+        android:id="@+id/text1"/>
+    <EditText
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:hint="Pass"
+        android:id="@+id/text2"
+        />
+    <EditText
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:hint="age"
+        android:id="@+id/text3"/>
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Male"
+        android:id="@+id/text4"
+        android:checked="false"/>
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Female"
+        android:id="@+id/text5"
+        android:checked="false"/>
+    <EditText
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:hint="adress"
+        android:id="@+id/text6"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="submit"
+        android:id="@+id/submit"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ans1"
+        android:textSize="20dp"
+        android:textColor="@color/black"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ans2"
+        android:textSize="20dp"
+        android:textColor="@color/black"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ans3"
+        android:textSize="20dp"
+
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ans4"
+        android:textSize="20dp"
+
+        android:textColor="@color/black"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ans5"
+        android:textSize="20dp"
+
+        android:textColor="@color/black"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ans6"
+        android:textSize="20dp"
+
+        android:textColor="@color/black"/>
+</LinearLayout>
+
+
+
+package com.example.form;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Color;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        EditText e1 = findViewById(R.id.text1);
+        EditText e2 = findViewById(R.id.text2);
+        EditText e3 = findViewById(R.id.text3);
+        EditText e4 = findViewById(R.id.text6);
+        RadioButton r1 = findViewById(R.id.text4);
+        RadioButton r2 = findViewById(R.id.text5);
+
+        TextView t1 = findViewById(R.id.ans1);
+        TextView t2 = findViewById(R.id.ans2);
+        TextView t3 = findViewById(R.id.ans3);
+        TextView t4 = findViewById(R.id.ans4);
+        TextView t5 = findViewById(R.id.ans5);
+        TextView t6 = findViewById(R.id.ans6);
+       // TextView t1 = findViewById(R.id.ans1);
+
+        Button b = findViewById(R.id.submit);
+
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String name,pass,add,male,female;
+                int age;
+
+                name = e1.getText().toString();
+                pass = e2.getText().toString();
+                age = Integer.parseInt(e3.getText().toString());
+                add = e4.getText().toString();
+                male = r1.getText().toString();
+                female = r2.getText().toString();
+
+
+                if(r1.isChecked()){
+                    t1.setText(name);
+                    t2.setText(pass);
+                    t3.setText(age+"");
+                    t4.setText(add);
+                    t5.setText(male);
+                }
+
+                if(r2.isChecked()){
+                    t1.setText(name);
+                    t2.setText(pass);
+                    t3.setText(age+"");
+                    t4.setText(add);
+                    t5.setText(female);
+                }
+            }
+        });
+
+        Button w = findViewById(R.id.white);
+        Button d = findViewById(R.id.dark);
+        LinearLayout l = findViewById(R.id.linear1);
+        TextView fo = findViewById(R.id.form);
+
+        w.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                l.setBackgroundColor(Color.WHITE);
+
+                t1.setTextColor(Color.BLACK);
+                t2.setTextColor(Color.BLACK);
+                t4.setTextColor(Color.BLACK);
+                t3.setTextColor(Color.BLACK);
+                t5.setTextColor(Color.BLACK);
+                t6.setTextColor(Color.BLACK);
+
+                e1.setTextColor(Color.BLACK);
+                e2.setTextColor(Color.BLACK);
+                e4.setTextColor(Color.BLACK);
+                e3.setTextColor(Color.BLACK);
+                r1.setTextColor(Color.BLACK);
+                r2.setTextColor(Color.BLACK);
+                fo.setTextColor(Color.BLACK);
+
+            }
+        });
+
+        d.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                l.setBackgroundColor(Color.BLACK);
+
+                t1.setTextColor(Color.WHITE);
+                t2.setTextColor(Color.WHITE);
+                t4.setTextColor(Color.WHITE);
+                t3.setTextColor(Color.WHITE);
+                t5.setTextColor(Color.WHITE);
+                t6.setTextColor(Color.WHITE);
+
+                e1.setTextColor(Color.WHITE);
+                e2.setTextColor(Color.WHITE);
+                e4.setTextColor(Color.WHITE);
+                e3.setTextColor(Color.WHITE);
+                r1.setTextColor(Color.WHITE);
+                r2.setTextColor(Color.WHITE);
+                fo.setTextColor(Color.WHITE);
+            }
+        });
+
+
+    }
+}
