@@ -1,0 +1,637 @@
+1)CALCULATOR
+import 'package:flutter/material.dart';
+void main() {
+  runApp(myApp());
+}
+class myApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.deepOrange,
+      ),
+      home: HomePage(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Calculator'),
+      ),
+      body: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.all(10.0),
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  text,
+                  style: TextStyle(
+                      fontSize: 60.0,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.deepOrange),
+                ),
+              ),
+            ),
+            Row(
+              children: <Widget>[
+                customOutlineButton("9"),
+                customOutlineButton("8"),
+                customOutlineButton("7"),
+                customOutlineButton("+"),
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                customOutlineButton("6"),
+                customOutlineButton("5"),
+                customOutlineButton("4"),
+                customOutlineButton("-"),
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                customOutlineButton("3"),
+                customOutlineButton("2"),
+                customOutlineButton("1"),
+                customOutlineButton("x"),
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                customOutlineButton("C"),
+                customOutlineButton("0"),
+                customOutlineButton("="),
+                customOutlineButton("/"),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  Widget customOutlineButton(String val) {
+    return Expanded(
+      child: OutlinedButton(
+        onPressed: () => btnClicked(val),
+        child: Text(
+          val,
+          style: TextStyle(fontSize: 35.0, color: Colors.deepOrange),
+        ),
+      ),
+    );
+  }
+  late int first, second;
+  late String res, text = "";
+  late String opp;
+  void btnClicked(String btnText) {
+    if (btnText == "C") {
+      res = "";
+      text = "";
+      first = 0;
+      second = 0;
+    } else if (btnText == "+" ||
+        btnText == "-" ||
+        btnText == "x" ||
+        btnText == "/") {
+      first = int.parse(text);
+      res = "";
+      opp = btnText;
+    } else if (btnText == "=") {
+      second = int.parse(text);
+      if (opp == "+") {
+        res = (first + second).toString();
+      }
+      if (opp == "-") {
+        res = (first - second).toString();
+      }
+      if (opp == "x") {
+        res = (first * second).toString();
+      }
+      if (opp == "/") {
+        res = (first ~/ second).toString();
+      }
+    } else {
+      res = int.parse(text + btnText).toString();
+    }
+    setState(() {
+      text = res;
+    });
+  }
+}
+
+
+
+2)GPS LOCATION 
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+     return MaterialApp(
+         home: Home()
+      );
+  }
+}
+
+class Home extends  StatefulWidget {
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+
+  bool servicestatus = false;
+  bool haspermission = false;
+  late LocationPermission permission;
+  late Position position;
+       String long = "", lat = "";
+  late StreamSubscription<Position> positionStream;
+
+   @override
+  void initState() {
+    checkGps();
+    super.initState();
+  }
+
+  checkGps() async {
+      servicestatus = await Geolocator.isLocationServiceEnabled();
+      if(servicestatus){
+            permission = await Geolocator.checkPermission();
+          
+            if (permission == LocationPermission.denied) {
+                permission = await Geolocator.requestPermission();
+                if (permission == LocationPermission.denied) {
+                    print('Location permissions are denied');
+                }else if(permission == LocationPermission.deniedForever){
+                    print("'Location permissions are permanently denied");
+                }else{
+                   haspermission = true;
+                }
+            }else{
+               haspermission = true;
+            }
+
+            if(haspermission){
+                setState(() {
+                  //refresh the UI
+                });
+
+                getLocation();
+            }
+      }else{
+        print("GPS Service is not enabled, turn on GPS location");
+      }
+
+      setState(() {
+         //refresh the UI
+      });
+  }
+
+  getLocation() async {
+      position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      print(position.longitude); //Output: 80.24599079
+      print(position.latitude); //Output: 29.6593457
+
+      long = position.longitude.toString();
+      lat = position.latitude.toString();
+
+      setState(() {
+         //refresh UI
+      });
+
+      LocationSettings locationSettings = LocationSettings(
+            accuracy: LocationAccuracy.high, //accuracy of the location data
+            distanceFilter: 100, //minimum distance (measured in meters) a 
+                                 //device must move horizontally before an update event is generated;
+      );
+
+      StreamSubscription<Position> positionStream = Geolocator.getPositionStream(
+            locationSettings: locationSettings).listen((Position position) {
+            print(position.longitude); //Output: 80.24599079
+            print(position.latitude); //Output: 29.6593457
+
+            long = position.longitude.toString();
+            lat = position.latitude.toString();
+
+            setState(() {
+              //refresh UI on update
+            });
+      });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+   
+    return Scaffold(
+         appBar: AppBar(
+            title: Text("Get GPS Location"),
+            backgroundColor: Colors.redAccent
+         ),
+          body: Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(50),
+             child: Column(
+                children: [ 
+
+                     Text(servicestatus? "GPS is Enabled": "GPS is disabled."),
+                     Text(haspermission? "GPS is Enabled": "GPS is disabled."),
+                     
+                     Text("Longitude: $long", style:TextStyle(fontSize: 20)),
+                     Text("Latitude: $lat", style: TextStyle(fontSize: 20),)
+
+                ]
+              )
+          )
+    );
+  } 
+}
+
+
+3) Create Alert Upon Action
+import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter',
+      home: Scaffold(
+          appBar: AppBar(
+            title: Text('Flutter'),
+          ),
+          body: MyLayout()),
+    );
+  }
+}
+
+class MyLayout extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ElevatedButton(
+        child: Text('Show alert'),
+        onPressed: () {
+          showAlertDialog(context);
+        },
+      ),
+    );
+  }
+}
+showAlertDialog(BuildContext context) {
+
+  // set up the buttons
+  Widget cancelButton = TextButton(
+    child: Text("Cancel"),
+    onPressed:  () {},
+  );
+  Widget continueButton = TextButton(
+    child: Text("Continue"),
+    onPressed:  () {},
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("AlertDialog"),
+    content: Text("Would you like to continue learning how to use Flutter alerts?"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+
+4) Alarm Clock
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
+
+void main() {
+runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+@override
+Widget build(BuildContext context) {
+	return MaterialApp(
+	debugShowCheckedModeBanner: false,
+	title: 'Flutter Alarm Clock',
+	theme: ThemeData(
+		primarySwatch: Colors.green,
+	),
+	home: MyHomePage(),
+	);
+}
+}
+
+class MyHomePage extends StatefulWidget {
+@override
+State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+
+// creating text ediiting controller to take hour
+// and minute as input
+TextEditingController hourController = TextEditingController();
+TextEditingController minuteController = TextEditingController();
+@override
+Widget build(BuildContext context) {
+	return Scaffold(
+	appBar: AppBar(
+		title: const Text('GeeksForGeeks'),
+		centerTitle: true,
+	),
+	body: Center(
+		child: Column(children: <Widget>[
+		SizedBox(height: 30),
+		Row(
+		mainAxisAlignment: MainAxisAlignment.center,
+		children: [
+			Container(
+			height: 40,
+			width: 60,
+			decoration: BoxDecoration(
+				shape: BoxShape.rectangle,
+				color: Colors.yellow,
+				borderRadius: BorderRadius.circular(11)),
+			child: Center(
+				child: TextField(
+				controller: hourController,
+				keyboardType: TextInputType.number,
+				),
+			),
+			),
+			SizedBox(width: 20),
+			Container(
+			height: 40,
+			width: 60,
+			decoration: BoxDecoration(
+				shape: BoxShape.rectangle,
+				color: Colors.yellow,
+				borderRadius: BorderRadius.circular(11)),
+			child: Center(
+				child: TextField(
+				controller: minuteController,
+				keyboardType: TextInputType.number,
+				),
+			),
+			),
+		],
+		),
+		Container(
+		margin: const EdgeInsets.all(25),
+		child: TextButton(
+			child: const Text(
+			'Create alarm',
+			style: TextStyle(fontSize: 20.0),
+			),
+			onPressed: () {
+			int hour;
+			int minutes;
+			hour = int.parse(hourController.text);
+			minutes = int.parse(minuteController.text);
+			
+			// creating alarm after converting hour
+			// and minute into integer
+			FlutterAlarmClock.createAlarm(hour, minutes);
+			},
+		),
+		),
+		ElevatedButton(
+		onPressed: () {
+			
+			// show alarm
+			FlutterAlarmClock.showAlarms();
+		},
+		child: const Text(
+			'Show Alarms',
+			style: TextStyle(fontSize: 20.0),
+		),
+		),
+		Container(
+		margin: const EdgeInsets.all(25),
+		child: TextButton(
+			child: const Text(
+				'Create timer',
+				style: TextStyle(fontSize: 20.0),
+			),
+			onPressed: () {
+				int minutes;
+				minutes = int.parse(minuteController.text);
+				
+				// create timer
+				FlutterAlarmClock.createTimer(minutes);
+				showDialog(
+					context: context,
+					builder: (context) {
+					return AboutDialog(
+						children: [
+						Center(
+							child: Text("Timer is set",
+								style: TextStyle(
+									fontSize: 20, fontWeight: FontWeight.bold)),
+						)
+						],
+					);
+					});
+			}),
+		),
+		ElevatedButton(
+		onPressed: () {
+			
+			// show timers
+			FlutterAlarmClock.showTimers();
+		},
+		child: Text(
+			"Show Timers",
+			style: TextStyle(fontSize: 17),
+		),
+		)
+	])),
+	);
+}
+}
+
+
+5) Gesture Based UI handling
+import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo Application', theme: ThemeData(
+      primarySwatch: Colors.green,),
+      home: MyHomePage(),
+    );
+  }
+}
+class MyHomePage extends StatefulWidget {
+  @override
+  MyHomePageState createState() => new MyHomePageState();
+}
+
+class MyHomePageState extends State<MyHomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('Gestures Example'),
+        centerTitle: true,
+      ),
+      body: new Center(child: GestureDetector(
+          onTap: () {
+            print('Box Clicked');
+          },
+          child: Container(
+            height: 60.0,
+            width: 120.0,
+            padding: EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              color: Colors.blueGrey,
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            child: Center(child: Text('Click Me')),
+          )
+      )),
+    );
+  }
+}  
+
+
+
+6)API calling
+
+import 'dart:collection';
+import 'package:flutter/material.dart';
+import 'http_class.dart';
+import 'model.dart';
+ 
+void main() {
+  runApp(MyApp());
+}
+ 
+class MyApp extends StatelessWidget {
+// to set the root of app.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: MyHomePage(title: 'API Demo Page'),
+    );
+  }
+}
+ 
+class MyHomePage extends StatefulWidget {
+ 
+  MyHomePage({Key key, this.title}) : super(key: key);
+ 
+  final String title;
+ 
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+ 
+class _MyHomePageState extends State<MyHomePage> {
+ 
+  @override
+  void initState() {
+    super.initState();
+ 
+  }
+ 
+  @override
+  Widget build(BuildContext context) {
+ 
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text("Flutter - API Implementation"),
+      ),
+      body: _buildBody(context),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+ 
+        },
+        label:Icon(Icons.cancel),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+ 
+  // build list view & manage states
+  FutureBuilder<List<User>> _buildBody(BuildContext context) {
+    final HttpService httpService = HttpService();
+    return FutureBuilder<List<User>>(
+ 
+      future: httpService.getPosts(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          final List<User> posts = snapshot.data;
+          return _buildPosts(context, posts);
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+ 
+  // build list view & its tile
+  ListView _buildPosts(BuildContext context, List<User> posts) {
+    return ListView.builder(
+      itemCount: posts.length,
+      padding: EdgeInsets.all(8),
+      itemBuilder: (context, index) {
+        return Card(
+          elevation: 4,
+          child: ListTile(
+            title: Text(
+              posts[index].title,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(posts[index].completed.toString()),
+          ),
+        );
+      },
+    );
+  }
+}
+
