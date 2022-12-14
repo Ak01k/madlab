@@ -1,0 +1,144 @@
+activity xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_margin="10dp"
+    android:orientation="vertical"
+    android:layout_weight="1"
+    >
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/img"
+        android:layout_margin="10dp"
+        ></ImageView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Yellow"
+        android:id="@+id/bt1"
+        android:textSize="20dp"
+        android:layout_margin="10dp"
+        android:background="@color/black">
+    </Button>
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_gravity="left"
+        android:layout_weight="1"
+        android:inputType="numberDecimal"
+        android:hint="Enter length"
+        android:id="@+id/len"
+        ></EditText>
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_gravity=""
+        android:hint="Enter width"
+        android:layout_weight="1"
+        android:inputType="numberDecimal"
+        android:id="@+id/wid"
+        ></EditText>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/text1"
+        android:gravity="left"></TextView>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:id="@+id/bt2"
+        android:textSize="20dp"
+        android:layout_margin="10dp"
+        android:background="@color/black">
+    </Button>
+
+
+</LinearLayout>
+
+
+mainactivity java
+
+package com.example.areacost;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    Button b1;
+    Button b2;
+    EditText e1;
+    EditText e2;
+    TextView t;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Bitmap bg = Bitmap.createBitmap(720,1280,Bitmap.Config.ARGB_8888);
+        ImageView i = (ImageView) findViewById(R.id.img);
+        i.setBackgroundDrawable(new BitmapDrawable(bg));
+
+        b1 = (Button) findViewById(R.id.bt1);
+        b2 = (Button) findViewById(R.id.bt2);
+        e1 = (EditText) findViewById(R.id.len);
+        e2 = (EditText) findViewById(R.id.wid);
+        t = (TextView)findViewById(R.id.text1);
+
+
+
+        Canvas c = new Canvas(bg);
+
+        Paint p1 = new Paint();
+        p1.setColor(Color.RED);
+
+        c.drawRect(70,300,650,600,p1);
+
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                p1.setColor(Color.YELLOW);
+                c.drawRect(70,300,650,600,p1);
+            }
+        });
+
+        b2.setOnClickListener(this);
+
+}
+    @Override
+    public void onClick (View v)
+    {
+        float num1 = 0;
+        float num2 = 0;
+        float result = 0;
+
+        num1 = Float.parseFloat(e1.getText().toString());
+        num2 = Float.parseFloat(e2.getText().toString());
+
+        result = (6*(num1+num2))*80;
+
+        t.setText("The total cost for painting the walls is: " + result);
+    }
+
+
+}
