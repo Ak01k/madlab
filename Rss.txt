@@ -1,4 +1,4 @@
-Activitymain.xml
+xml
 
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,10 +13,10 @@ Activitymain.xml
 
 </LinearLayout>
 
-========
-Main Activity.java
+java
 
 package com.example.rssfeed;
+
 import android.app.ListActivity;
 import android.content.Intent;
 import android.net.Uri;
@@ -24,7 +24,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-
 import android.widget.ListView;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -35,16 +34,19 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
 public class MainActivity extends ListActivity
 {
     List headlines;
     List links;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         new MyAsyncTask().execute();
     }
+
     class MyAsyncTask extends AsyncTask<Object,Void,ArrayAdapter>
     {
         @Override
@@ -54,13 +56,15 @@ public class MainActivity extends ListActivity
             links = new ArrayList();
             try
             {
-                URL url = new URL("https://timesofindia.indiatimes.com/rssfeedmostrecent.cms");
+                URL url = new URL("https://codingconnect.net/feed");
                 XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(false);
                 XmlPullParser xpp = factory.newPullParser();
+
                 // We will get the XML from an input stream
                 xpp.setInput(getInputStream(url), "UTF_8");
                 boolean insideItem = false;
+
                 // Returns the type of current event: START_TAG, END_TAG, etc..
                 int eventType = xpp.getEventType();
                 while (eventType != XmlPullParser.END_DOCUMENT)
@@ -100,7 +104,6 @@ public class MainActivity extends ListActivity
             }
             catch (IOException e)
             {
-
                 e.printStackTrace();
             }
             return null;
@@ -112,11 +115,11 @@ public class MainActivity extends ListActivity
         }
     }
 
-
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id)
     {
-        Uri uri = Uri.parse((links.get(position)).toString()); Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        Uri uri = Uri.parse((links.get(position)).toString());
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
     }
 
@@ -132,3 +135,38 @@ public class MainActivity extends ListActivity
         }
     }
 }
+
+manifest
+
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.RSSfeed"
+        tools:targetApi="31">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+    </application>
+
+</manifest>
