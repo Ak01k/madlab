@@ -1,0 +1,210 @@
+//flutter pub add geolocator
+//run this command in terminal
+
+import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:geolocator/geolocator.dart';
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Home()
+
+    );
+  }
+}
+
+class Home extends  StatefulWidget {
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+
+  bool servicestatus = false;
+  bool haspermission = false;
+  late LocationPermission permission;
+  late Position position;
+  String long = "", lat = "";
+  late StreamSubscription<Position> positionStream;
+
+  @override
+  void initState() {
+    checkGps();
+    super.initState();
+  }
+
+  checkGps() async {
+    servicestatus = await Geolocator.isLocationServiceEnabled();
+    if(servicestatus){
+      permission = await Geolocator.checkPermission();
+
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          print('Location permissions are denied');
+        }else if(permission == LocationPermission.deniedForever){
+          print("'Location permissions are permanently denied");
+        }else{
+          haspermission = true;
+        }
+      }else{
+        haspermission = true;
+      }
+
+      if(haspermission){
+        setState(() {
+          //refresh the UI
+        });
+
+        getLocation();
+      }
+    }else{
+      print("GPS Service is not enabled, turn on GPS location");
+    }
+
+    setState(() {
+      //refresh the UI
+    });
+  }
+
+  getLocation() async {
+    position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    print(position.longitude);
+    print(position.latitude);
+
+    long = position.longitude.toString();
+    lat = position.latitude.toString();
+
+    setState(() {
+      //refresh UI
+    });
+
+    LocationSettings locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.high, //accuracy of the location data
+      distanceFilter: 100, //minimum distance (measured in meters) a
+      //device must move horizontally before an update event is generated;
+    );
+
+    StreamSubscription<Position> positionStream = Geolocator.getPositionStream(
+        locationSettings: locationSettings).listen((Position position) {
+      print(position.longitude); //Output: 80.24599079
+      print(position.latitude); //Output: 29.6593457
+
+      long = position.longitude.toString();
+      lat = position.latitude.toString();
+
+      setState(() {
+        //refresh UI on update
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+      appBar: AppBar(
+          title: Text("ID Card"),
+          backgroundColor: Colors.lightBlue
+      ),
+      body: Center(
+        /** Card Widget **/
+        child: Card(
+          elevation: 50,
+          shadowColor: Colors.black,
+          color: Colors.lightBlue,
+          child: SizedBox(
+            width: 400,
+            height: 700,
+            child: Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: Column(
+                children: [
+                  Text(
+                    'SSN College of Engineering',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ), //Textstyle
+                  ), //Text
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  CircleAvatar(
+                    backgroundColor: Colors.lightBlue,
+                    radius: 100,
+                    child: const CircleAvatar(
+                      backgroundImage: NetworkImage(
+                          'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'), //NetworkImage
+                      radius: 100,
+                    ), //CircleAvatar
+                  ), //CircleAvatar
+                  const SizedBox(
+                    height: 10,
+                  ), //SizedBox
+                  Text(
+                    'Name:Shreya PS',
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                    ), //Textstyle
+                  ), //Text
+                  const SizedBox(
+                    height: 10,
+                  ), //SizedBox
+                  Text(
+                    'Reg No:195002111',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                    ), //Textstyle
+                  ), //Text
+                  const SizedBox(
+                    height: 10,
+                  ), //SizedBox
+                  Text(
+                    'Department:Information Technology',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                    ), //Textstyle
+                  ), //Text
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.all(50),
+                      child: Column(
+                          children: [
+
+                            // Text(servicestatus? "GPS is Enabled": "GPS is disabled."),
+                            //Text(haspermission? "GPS is Enabled": "GPS is disabled."),
+
+                            Text("Longitude: $long", style:TextStyle(fontSize: 20)),
+                            Text("Latitude: $lat", style: TextStyle(fontSize: 20),)
+
+                          ]
+                      )
+                  )
+
+                ],
+              ), //Column
+            ), //Padding
+          ), //SizedBox
+        ), //Card
+      ), //Center
+    );
+  }
+}
