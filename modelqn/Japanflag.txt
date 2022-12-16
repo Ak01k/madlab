@@ -1,0 +1,62 @@
+main.java
+
+package com.example.myprojjj;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+import android.widget.ImageView;
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Bitmap bg = Bitmap.createBitmap(720,1280,Bitmap.Config.ARGB_8888);
+        ImageView i = findViewById(R.id.image);
+        i.setBackgroundDrawable(new BitmapDrawable(bg));
+
+        Canvas cg = new Canvas(bg);
+
+        Paint p2 = new Paint();
+        p2.setColor(Color.WHITE);
+        Paint p3=new Paint();
+        p3.setColor(Color.RED);
+        Paint p4=new Paint();
+        p4.setColor(Color.BLACK);
+        p4.setStyle(Paint.Style.STROKE);
+        p2.setStyle(Paint.Style.FILL);
+        p3.setStyle(Paint.Style.FILL);
+        cg.drawRect(100,500,600,100,p2);
+        cg.drawRect(100,500,600,100,p4);
+        cg.drawCircle(350,300,70,p3);
+
+
+
+    }
+}
+
+xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
