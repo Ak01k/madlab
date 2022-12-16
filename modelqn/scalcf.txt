@@ -1,4 +1,4 @@
-pusec.yaml file -> dependecies -> paste
+pubsec.yaml file -> dependecies -> paste
 flutter_grid_button:
 like this
 dependencies:
